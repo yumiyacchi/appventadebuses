@@ -27,10 +27,12 @@ import cl.travy.app.viewmodel.HomeViewModel
 import cl.travy.app.viewmodel.PagoViewModel
 import cl.travy.app.viewmodel.SeleccionAsientoViewModel
 import cl.travy.app.viewmodel.SeleccionViajeViewModel
+import android.util.Log
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+
 
     NavHost(
         navController = navController,
@@ -103,14 +105,13 @@ fun AppNavigation() {
             val viewModel: SeleccionViajeViewModel = viewModel()
             val uiState by viewModel.uiState.collectAsState()
 
-
-
             SeleccionViajeScreen(
                 state = uiState,
                 onViajeClick = { idViajeSeleccionado ->
-                    navController.navigate(
-                        AppRoutes.SeleccionarAsiento.createRoute(idViajeSeleccionado)
-                    )
+                    val rutaDestino = AppRoutes.SeleccionarAsiento.createRoute(idViajeSeleccionado)
+                    Log.d("AppNavigation", "Intentando navegar a la ruta: $rutaDestino")
+                    navController.navigate(rutaDestino)
+                    
                 },
                 onNavigateBack = { navController.popBackStack() }
 

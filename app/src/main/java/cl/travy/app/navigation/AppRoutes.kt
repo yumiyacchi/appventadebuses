@@ -8,7 +8,7 @@ sealed class AppRoutes(val route: String) {
     object SeleccionarViaje : AppRoutes("seleccionar_viajes_screen/{origen}/{destino}/{fecha}") {
         fun createRoute(origen: String, destino: String, fecha: Long) = "seleccionar_viajes_screen/$origen/$destino/$fecha"
     }
-    object SeleccionarAsiento : AppRoutes("seleccionar_asientos_screen") {
+    object SeleccionarAsiento : AppRoutes("seleccionar_asientos_screen/{idViaje}") {
         fun createRoute(idViaje: Int) = "seleccionar_asientos_screen/$idViaje"
     }
     object PagarViaje : AppRoutes("pagar_viaje_screen")

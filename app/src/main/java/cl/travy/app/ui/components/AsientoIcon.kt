@@ -1,5 +1,6 @@
 package cl.travy.app.ui.components
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,7 +32,9 @@ import cl.travy.app.model.data.asiento.EstadoAsiento
 import cl.travy.app.ui.theme.*
 import java.util.Locale
 import kotlin.text.lowercase
-
+import androidx.compose.ui.tooling.preview.Preview
+import cl.travy.app.model.data.asiento.PosicionAsiento
+import cl.travy.app.model.data.asiento.TipoAsiento
 
 @Composable
 fun AsientoIcon(
@@ -48,8 +53,9 @@ fun AsientoIcon(
     Card(
         modifier = modifier
             .height(70.dp)
+            .width(70.dp)
             .border(
-                width = 2.dp,
+                width = 6.dp,
                 color = colorBorde,
                 shape = RoundedCornerShape(corner = CornerSize(8.dp))
             )
@@ -75,6 +81,7 @@ fun AsientoIcon(
                         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
                     color = DarkGrey,
                     fontSize = 9.sp,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center
                 )
             }
@@ -92,5 +99,29 @@ fun AsientoIcon(
                 )
             }
         }
+    }
+}
+
+@Preview(
+    name = "Asiento Disponible",
+    backgroundColor = 0xFFFFFFFF,
+    showBackground = true
+)
+@Composable
+fun AsientoIconDisponiblePreview() {
+    val asientoDePrueba = Asiento(
+        numero = 12,
+        tipo = TipoAsiento.SEMICAMA,
+        estado = EstadoAsiento.DISPONIBLE,
+        posicion = PosicionAsiento.VENTANA,
+    )
+
+
+    TravyAppTheme {
+        AsientoIcon(
+            asiento = asientoDePrueba,
+            tieneDatos = false,
+            onClick = { }
+        )
     }
 }

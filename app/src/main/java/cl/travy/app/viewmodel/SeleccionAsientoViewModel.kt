@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cl.travy.app.model.data.DetalleViajeState
 import cl.travy.app.model.data.SeleccionAsientoUiState
 import cl.travy.app.model.data.asiento.TipoAsiento
@@ -19,19 +18,20 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class SeleccionAsientoViewModel (savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SeleccionAsientoUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val viajeId: Int = savedStateHandle.get<Int>("IdViaje") ?: -1
+    private val viajeId: Int = savedStateHandle.get<Int>("idViaje") ?: -1
 
     init {
-        Log.d("AsientoViewModel", "ViewModel iniciado para viajeId: $viajeId")
+        Log.d("AsientoViewModel", "ViewModel iniciado para idViaje: $viajeId")
         if (viajeId != -1) {
             cargarDetallesDelViaje(viajeId)
         } else {
-            Log.e("AsientoViewModel", "Error: viajeId no fue proporcionado")
+            Log.e("AsientoViewModel", "Error: idViaje no fue proporcionado")
             _uiState.update { it.copy(estadoViaje = DetalleViajeState.Error("ID de viaje no encontrado.")) }
         }
     }
@@ -39,7 +39,7 @@ class SeleccionAsientoViewModel (savedStateHandle: SavedStateHandle) : ViewModel
     private fun cargarDetallesDelViaje(id: Int) {
         viewModelScope.launch {
             _uiState.update { it.copy(estadoViaje = DetalleViajeState.Cargando) }
-            Log.d("AsientoViewModel", "Iniciando carga para viajeId: $id")
+            Log.d("AsientoViewModel", "Iniciando carga para IdViaje: $id")
 
             try {
                 val viajeEncontrado = withContext(Dispatchers.IO) {
