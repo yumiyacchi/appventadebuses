@@ -52,12 +52,14 @@ fun ElegirAsientoScreen(
                     is DetalleViajeState.Cargando -> {
                         CircularProgressIndicator()
                     }
+
                     is DetalleViajeState.Error -> {
                         Text(
                             text = estadoViaje.mensaje,
                             color = MaterialTheme.colorScheme.error
                         )
                     }
+
                     is DetalleViajeState.Exitoso -> {
                         ContenidoPrincipal(
                             viaje = estadoViaje.viaje,
@@ -82,7 +84,6 @@ fun ElegirAsientoScreen(
 }
 
 
-
 @Composable
 private fun ContenidoPrincipal(
     viaje: Viaje,
@@ -96,7 +97,10 @@ private fun ContenidoPrincipal(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "${viaje.origen} - ${viaje.destino}", style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = "${viaje.origen} - ${viaje.destino}",
+            style = MaterialTheme.typography.headlineSmall
+        )
         Text(text = viaje.fecha, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(24.dp))
 
@@ -114,8 +118,15 @@ private fun ContenidoPrincipal(
                 state.pasajerosPorAsiento[asientoId]?.estaCompleto == true
             }
 
-            Text("Asientos seleccionados: ${state.asientosSeleccionados.size}", style = MaterialTheme.typography.bodyLarge)
-            Text("Total: $${"%.0f".format(state.precioTotal)}", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(
+                "Asientos seleccionados: ${state.asientosSeleccionados.size}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                "Total: $${"%.0f".format(state.precioTotal)}",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(Modifier.height(16.dp))
             Button(
                 onClick = onContinuarClick,
@@ -158,7 +169,11 @@ private fun PlanoDeAsientos(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .background(color, RoundedCornerShape(8.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.outlineVariant,
+                        RoundedCornerShape(8.dp)
+                    )
                     .clickable { onAsientoClick(numeroAsiento) },
                 contentAlignment = Alignment.Center
             ) {
@@ -184,19 +199,38 @@ private fun DialogoIngresoPasajero(
     var genero by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var telefono by remember { mutableStateOf("") }
-    val estaCompleto = nombre.isNotBlank() && apellido.isNotBlank() && email.isNotBlank() && telefono.isNotBlank() && genero.isNotBlank()
+    val estaCompleto =
+        nombre.isNotBlank() && apellido.isNotBlank() && email.isNotBlank() && telefono.isNotBlank() && genero.isNotBlank()
 
     Dialog(onDismissRequest = onCancelar) {
         Card(shape = RoundedCornerShape(16.dp)) {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = "Datos del Pasajero - Asiento $numeroAsiento", style = MaterialTheme.typography.headlineSmall)
+                Text(
+                    text = "Datos del Pasajero - Asiento $numeroAsiento",
+                    style = MaterialTheme.typography.headlineSmall
+                )
                 Spacer(Modifier.height(16.dp))
 
-                OutlinedTextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
-                OutlinedTextField(value = apellido, onValueChange = { apellido = it }, label = { Text("Apellido") })
-                OutlinedTextField(value = genero, onValueChange = { genero = it }, label = { Text("Género") })
-                OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-                OutlinedTextField(value = telefono, onValueChange = { telefono = it }, label = { Text("Teléfono") })
+                OutlinedTextField(
+                    value = nombre,
+                    onValueChange = { nombre = it },
+                    label = { Text("Nombre") })
+                OutlinedTextField(
+                    value = apellido,
+                    onValueChange = { apellido = it },
+                    label = { Text("Apellido") })
+                OutlinedTextField(
+                    value = genero,
+                    onValueChange = { genero = it },
+                    label = { Text("Género") })
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Email") })
+                OutlinedTextField(
+                    value = telefono,
+                    onValueChange = { telefono = it },
+                    label = { Text("Teléfono") })
                 Spacer(Modifier.height(24.dp))
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -206,7 +240,14 @@ private fun DialogoIngresoPasajero(
                     Spacer(Modifier.width(8.dp))
                     Button(
                         onClick = {
-                            val info = InfoPasajero(numeroAsiento, nombre, apellido, genero, email, telefono)
+                            val info = InfoPasajero(
+                                numeroAsiento,
+                                nombre,
+                                apellido,
+                                genero,
+                                email,
+                                telefono
+                            )
                             onGuardar(info)
                         },
                         enabled = estaCompleto
@@ -263,7 +304,7 @@ private fun ElegirAsientoScreenSuccessPreview() {
             1 to InfoPasajero(1, "Ana", "Rojas", "F", "ana@mail.com", "987654321")
         ),
 
-    )
+        )
     MaterialTheme {
         ElegirAsientoScreen(
             state = successState,
@@ -302,7 +343,7 @@ private fun ElegirAsientoScreenDialogPreview() {
 
         asientoEnEdicion = 2,
 
-    )
+        )
     MaterialTheme {
         ElegirAsientoScreen(
             state = dialogState,

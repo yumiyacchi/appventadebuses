@@ -21,5 +21,6 @@ data class Asiento(
     val numero: Int,
     val tipo: TipoAsiento,
     val posicion: PosicionAsiento,
-    val estado: EstadoAsiento
+    val estado: EstadoAsiento,
+    val precio: Double
 )

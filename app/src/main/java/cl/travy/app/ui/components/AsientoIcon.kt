@@ -114,6 +114,7 @@ fun AsientoIconDisponiblePreview() {
         tipo = TipoAsiento.SEMICAMA,
         estado = EstadoAsiento.DISPONIBLE,
         posicion = PosicionAsiento.VENTANA,
+        precio = 5000.00
     )
 
 
