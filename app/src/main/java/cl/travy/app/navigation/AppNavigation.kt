@@ -135,7 +135,8 @@ fun AppNavigation() {
                 },
                 onNavigateBack = { navController.popBackStack() },
                 onGuardarDatosPasajero = viewModel::guardarDatosPasajero,
-                onCancelarDialogo = viewModel::cancelarEdicionPasajero
+                onCancelarDialogo = viewModel::cancelarEdicionPasajero,
+                onDatosPasajeroChange = viewModel::onDatosPasajeroChange
             )
         }
 

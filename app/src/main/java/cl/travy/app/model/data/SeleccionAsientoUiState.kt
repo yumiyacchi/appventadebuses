@@ -1,6 +1,6 @@
 package cl.travy.app.model.data
 
-import cl.travy.app.model.data.Viaje
+import cl.travy.app.model.data.asiento.Asiento
 
 sealed class DetalleViajeState {
     object Cargando: DetalleViajeState()
@@ -14,16 +14,8 @@ data class SeleccionAsientoUiState(
     val estadoViaje: DetalleViajeState = DetalleViajeState.Cargando,
     val asientosSeleccionados: Set<Int> = emptySet(),
     val pasajerosPorAsiento: Map<Int, InfoPasajero> = emptyMap(),
-    val asientoEnEdicion: Int? = null
+    val asientoEnEdicion: Int? = null,
+    val precioTotal: Double = 0.0
 
-) {
-    val precioTotal: Double
-        get() {
-            return if (estadoViaje is DetalleViajeState.Exitoso) {
-                estadoViaje.viaje.precio * asientosSeleccionados.size
-            } else {
-                0.0
-            }
-        }
-}
+)
 

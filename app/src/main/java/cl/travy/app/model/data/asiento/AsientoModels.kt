@@ -17,6 +17,21 @@ enum class EstadoAsiento {
     SELECCIONADO
 }
 
+object PrecioAsientoConfig {
+    private val precios: Map<TipoAsiento, Double> = mapOf(
+        TipoAsiento.STANDARD to 6000.00,
+        TipoAsiento.SEMICAMA to 7500.00,
+        TipoAsiento.SALONCAMA to 10000.00
+
+
+    )
+
+    fun obtenerPrecio(tipo: TipoAsiento): Double {
+        return precios[tipo] ?: 0.0
+    }
+}
+
+
 data class Asiento(
     val numero: Int,
     val tipo: TipoAsiento,
