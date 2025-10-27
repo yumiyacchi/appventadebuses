@@ -121,7 +121,7 @@ private fun ContenidoPrincipal(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(450.dp),
             shape = RoundedCornerShape(12.dp),
             border = BorderStroke(2.dp, DarkBlue)
         ) {
@@ -197,7 +197,8 @@ private fun PlanoDeAsientos(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp)
+            .height(700.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
