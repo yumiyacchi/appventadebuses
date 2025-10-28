@@ -40,7 +40,7 @@ fun getHomeMenuItems(
             texto = "Opciones",
             icono = Icons.Default.Settings,
             onClick = {},
-            habilitado = false
+            habilitado = true
         ),
 
     )
