@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cl.travy.app.model.data.LoginUiState
 import cl.travy.app.ui.components.TopAppBarGenerico
+import cl.travy.app.ui.theme.LightBlue
 import cl.travy.app.ui.theme.TravyAppTheme
 import cl.travy.app.viewmodel.AuthViewModel
 
@@ -177,7 +178,7 @@ fun BotonIniciarSesion(
             .padding(horizontal = 20.dp, vertical = 20.dp)
             .height(50.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+        colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
     ) {
         if (enabled) {
             Text(

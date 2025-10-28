@@ -19,33 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cl.travy.app.model.data.HomeUiState
 import cl.travy.app.model.data.MenuItem
+import cl.travy.app.ui.layout.LayoutPantallaBase
 import cl.travy.app.ui.theme.LightBlue
 import cl.travy.app.ui.theme.TravyAppTheme
 import cl.travy.app.ui.theme.White
 
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     uiState: HomeUiState
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Travy") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+
+    LayoutPantallaBase(
+
+        titulo = "Home",
+        onNavegarAtras = null,
+        contenidoPrincipal = { modifier ->
+            MenuPrincipal(
+                modifier = modifier,
+                items = uiState.menuItems
             )
         }
-    ) { paddingValues ->
-        MenuPrincipal(
-            modifier = Modifier.padding(paddingValues),
-            items = uiState.menuItems
-        )
-    }
+    )
 }
 
 
