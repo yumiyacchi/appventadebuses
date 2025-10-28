@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.sp
 import cl.travy.app.ui.layout.LayoutPantallaBase
 import cl.travy.app.viewmodel.MetodoPago
 import cl.travy.app.viewmodel.PagoUiState
+import cl.travy.app.ui.theme.LightBlue
+import cl.travy.app.ui.theme.DarkBlue
 
 
 @Composable
@@ -63,7 +65,7 @@ private fun ContenidoPantallaPago(
 
         Text(
             text = "Total a Pagar",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             color = Color.Gray
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -71,7 +73,7 @@ private fun ContenidoPantallaPago(
             text = "$${"%,.0f".format(totalAPagar)}",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = DarkBlue
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -148,7 +150,7 @@ fun BotonPagar(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+        colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
         modifier = modifier
             .width(280.dp)
             .height(60.dp)

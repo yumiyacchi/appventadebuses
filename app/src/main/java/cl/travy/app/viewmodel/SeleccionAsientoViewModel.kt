@@ -22,9 +22,9 @@ class SeleccionAsientoViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SeleccionAsientoUiState())
-
-
     val uiState = _uiState.asStateFlow()
+
+
 
     init {
         val idViaje: Int? = savedStateHandle["idViaje"]
