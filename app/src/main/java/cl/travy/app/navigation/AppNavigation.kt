@@ -21,6 +21,8 @@ import cl.travy.app.ui.screens.ElegirAsientoScreen
 import cl.travy.app.ui.screens.LoginScreen
 import cl.travy.app.ui.screens.SeleccionViajeScreen
 import cl.travy.app.ui.screens.SettingsScreen
+import cl.travy.app.ui.screens.ComprobanteViajeScreen
+import cl.travy.app.ui.screens.PagoScreen
 import cl.travy.app.viewmodel.AuthViewModel
 import cl.travy.app.viewmodel.BuscarViajeViewModel
 import cl.travy.app.viewmodel.HomeViewModel
@@ -32,6 +34,7 @@ import android.util.Log
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val pagoViewModel: PagoViewModel = viewModel()
 
 
     NavHost(
@@ -131,16 +134,65 @@ fun AppNavigation() {
                 state = uiState,
                 onAsientoClick = viewModel::onAsientoClick,
                 onContinuarClick = {
+                   pagoViewModel.prepararCompra(
+                       pasajeros = uiState.pasajerosPorAsiento,
+                       precio = uiState.precioTotal
+                   )
                     navController.navigate(AppRoutes.PagarViaje.route)
                 },
                 onNavigateBack = { navController.popBackStack() },
                 onGuardarDatosPasajero = viewModel::guardarDatosPasajero,
-                onCancelarDialogo = viewModel::cancelarEdicionPasajero,
+                onCancelarDialogo = { viewModel.cancelarEdicionPasajero()},
                 onDatosPasajeroChange = viewModel::onDatosPasajeroChange
             )
         }
 
+        composable(route = AppRoutes.PagarViaje.route) {
 
+            val uiState by pagoViewModel.uiState.collectAsState()
+
+
+            LaunchedEffect(uiState.pagoRealizadoConExito) {
+                if (uiState.pagoRealizadoConExito) {
+                    navController.navigate(AppRoutes.ComprobanteViaje.route) {
+
+                        popUpTo(AppRoutes.PagarViaje.route) { inclusive = true }
+                    }
+                }
+            }
+
+
+            PagoScreen(
+                state = uiState,
+                onMetodoSeleccionado = { metodo ->
+                    pagoViewModel.seleccionarMetodoDePago(metodo)
+                },
+                onConfirmarPago = {
+                    pagoViewModel.ejecutarPago()
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(route = AppRoutes.ComprobanteViaje.route) {
+            val uiState by pagoViewModel.uiState.collectAsState()
+            
+            if (uiState.pasajerosPorAsiento.isNotEmpty() && uiState.metodoSeleccionado != null) {
+                ComprobanteViajeScreen(
+                    pasajerosPorAsiento = uiState.pasajerosPorAsiento,
+                    precioTotal = uiState.precioTotal,
+                    metodoPago = uiState.metodoSeleccionado!!,
+                    onVolverAlInicio = {
+                        pagoViewModel.finalizarYResetear()
+                        navController.navigate(AppRoutes.Home.route) {
+                            popUpTo(AppRoutes.Home.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+        }
 
 
         composable(route = AppRoutes.Settings.route) {

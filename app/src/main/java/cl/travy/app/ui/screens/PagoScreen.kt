@@ -5,6 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// Tus imports correctos
 import cl.travy.app.ui.layout.LayoutPantallaBase
 import cl.travy.app.viewmodel.MetodoPago
 import cl.travy.app.viewmodel.PagoUiState
@@ -26,12 +28,10 @@ import cl.travy.app.ui.theme.DarkBlue
 @Composable
 fun PagoScreen(
     state: PagoUiState,
-    totalAPagar: Double,
-    onMetodoSeleccionado: (String) -> Unit,
+    onMetodoSeleccionado: (MetodoPago) -> Unit,
     onConfirmarPago: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-
     LayoutPantallaBase(
         titulo = "Pago",
         onNavegarAtras = onNavigateBack,
@@ -39,7 +39,6 @@ fun PagoScreen(
             ContenidoPantallaPago(
                 modifier = modifier,
                 state = state,
-                totalAPagar = totalAPagar,
                 onMetodoSeleccionado = onMetodoSeleccionado,
                 onConfirmarPago = onConfirmarPago
             )
@@ -51,8 +50,7 @@ fun PagoScreen(
 private fun ContenidoPantallaPago(
     modifier: Modifier = Modifier,
     state: PagoUiState,
-    totalAPagar: Double,
-    onMetodoSeleccionado: (String) -> Unit,
+    onMetodoSeleccionado: (MetodoPago) -> Unit,
     onConfirmarPago: () -> Unit
 ) {
     Column(
@@ -70,7 +68,7 @@ private fun ContenidoPantallaPago(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "$${"%,.0f".format(totalAPagar)}",
+            text = "$${"%,.0f".format(state.precioTotal)}",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
             color = DarkBlue
@@ -86,8 +84,8 @@ private fun ContenidoPantallaPago(
                 MetodoDePagoFila(
                     texto = metodo.nombreMetodoPago,
                     icono = metodo.icono,
-                    seleccionado = (state.metodoSeleccionadoId == metodo.id),
-                    onClick = { onMetodoSeleccionado(metodo.id) }
+                    seleccionado = (state.metodoSeleccionado == metodo),
+                    onClick = { onMetodoSeleccionado(metodo) }
                 )
             }
         }
@@ -96,14 +94,15 @@ private fun ContenidoPantallaPago(
 
         BotonPagar(
             modifier = Modifier.padding(bottom = 32.dp),
-            onClick = onConfirmarPago
+            onClick = onConfirmarPago,
+            enabled = state.metodoSeleccionado != null
         )
     }
 }
 
 
 @Composable
-fun MetodoDePagoFila(
+private fun MetodoDePagoFila(
     texto: String,
     icono: ImageVector,
     seleccionado: Boolean,
@@ -146,9 +145,14 @@ fun MetodoDePagoFila(
 }
 
 @Composable
-fun BotonPagar(modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun BotonPagar(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    enabled: Boolean
+) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         shape = RoundedCornerShape(28.dp),
         colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
         modifier = modifier
@@ -164,13 +168,41 @@ fun BotonPagar(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, name = "PagoScreen Preview")
 @Composable
-fun PantallaPagoRefactorizadaPreview() {
+private fun PagoScreenPreview() {
+    val metodos = listOf(
+        MetodoPago("tarjeta", "Tarjeta de Crédito", Icons.Default.CreditCard),
+        MetodoPago("qr", "Código QR", Icons.Default.QrCode)
+    )
     MaterialTheme {
         PagoScreen(
-            state = PagoUiState(metodoSeleccionadoId = "Código QR"),
-            totalAPagar = 45500.0,
+            state = PagoUiState(
+                precioTotal = 45500.0,
+                metodosDisponibles = metodos,
+                metodoSeleccionado = metodos[0] // Pre-seleccionar el primer método para el preview
+            ),
+            onMetodoSeleccionado = {},
+            onConfirmarPago = {},
+            onNavigateBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "PagoScreen sin selección")
+@Composable
+private fun PagoScreenSinSeleccionPreview() {
+    val metodos = listOf(
+        MetodoPago("tarjeta", "Tarjeta de Crédito", Icons.Default.CreditCard),
+        MetodoPago("qr", "Código QR", Icons.Default.QrCode)
+    )
+    MaterialTheme {
+        PagoScreen(
+            state = PagoUiState(
+                precioTotal = 12300.0,
+                metodosDisponibles = metodos,
+                metodoSeleccionado = null // Ningún método seleccionado
+            ),
             onMetodoSeleccionado = {},
             onConfirmarPago = {},
             onNavigateBack = {}

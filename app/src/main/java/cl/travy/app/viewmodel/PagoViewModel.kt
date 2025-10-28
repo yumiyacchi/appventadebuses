@@ -28,7 +28,7 @@ data class PagoUiState(
         MetodoPago(id = "tarjeta", nombreMetodoPago = "Tarjeta de Crédito o Débito)", icono = Icons.Default.CreditCard),
         MetodoPago(id = "qr", nombreMetodoPago = "QR", icono = Icons.Default.QrCode),
         ),
-    val metodoSeleccionadoId: String? = null,
+    val metodoSeleccionado: MetodoPago? = null,
     val pagoRealizadoConExito: Boolean = false)
 
 class PagoViewModel : ViewModel() {
@@ -43,20 +43,20 @@ class PagoViewModel : ViewModel() {
                 pasajerosPorAsiento = pasajeros,
                 precioTotal = precio,
                 pagoRealizadoConExito = false,
-                metodoSeleccionadoId = null
+                metodoSeleccionado = null
             )
         }
     }
 
 
-    fun seleccionarMetodo(metodoId: String) {
+    fun seleccionarMetodoDePago(metodo: MetodoPago) {
         _uiState.update { currentState ->
-            currentState.copy(metodoSeleccionadoId = metodoId)
+            currentState.copy(metodoSeleccionado = metodo)
         }
     }
 
     fun ejecutarPago() {
-        if (_uiState.value.metodoSeleccionadoId != null) {
+        if (_uiState.value.metodoSeleccionado != null) {
             _uiState.update { it.copy(pagoRealizadoConExito = true) }
         }
     }
